@@ -9,6 +9,7 @@ public class Ad_book_source {
     String email;
     String city;
     String state;
+    int number;
     private Scanner fetch = new Scanner(System.in);
 
     //Using constructor to take in values
@@ -25,12 +26,14 @@ public class Ad_book_source {
         this.zip_code = fetch.nextInt();
         System.out.println("GIVE ME THE CITY :");
         this.city = fetch.next();
+        System.out.println("GIVE ME THE STATE");
+        this.state = fetch.nextLine();
     }
 
     //Overriding toString method to return values as per desire
     public String toString() {
 
-        return ("FIRST NAME : " + first_name + "\nLAST NAME : " + last_name + "\nPHONE : " + mobile + "\nEMAIL : " + email + "\nZIP CODE : " + zip_code + "\nCITY : " + city);
+        return ("FIRST NAME : " + first_name + "\nLAST NAME : " + last_name + "\nPHONE : " + mobile + "\nEMAIL : " + email + "\nZIP CODE : " + zip_code + "\nCITY : " + city + "\nSTATE : " + state);
     }
 
     public String getName() {
@@ -79,10 +82,21 @@ public class Ad_book_source {
                 String changer_city = fetch.next();
                 this.city = changer_city;
                 break;
+            case 7:
+                System.out.println("CHANGE THE STATE TO :");//Allowing user to change the State
+                String changer_state = fetch.next();
+                this.city = changer_state;
+                break;
 
             default:
                 break;
         }
+
+    }
+
+    public void zero_set() {
+
+        this.number = 0;
 
     }
 }

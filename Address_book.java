@@ -1,46 +1,66 @@
-public void change_details() {
-        System.out.println("WHICH DETAiLS DO YOU WAnT TO CHANGE ? :");
-        System.out.println("1.FIRST NAME\n2.LAST NAME\n3.PHONE NO.\n4.EMAIL\n5.ZIP CODE\n6.CITY\n7.EXIT");
-        int change_choice = fetch.nextInt();
-        switch (change_choice) {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-            case 1://changes the First name
-                System.out.println("CHANGE THE FIRST NAME TO :");//Allowing user to change First name
-                String changer_fname = fetch.next();
-                this.first_name = changer_fname;
-                break;
-            case 2://changes the last name
-                System.out.println("CHANGE THE LAST NAME TO :");//Allowing user to change Last name
-                String changer_lname = fetch.next();
-                this.last_name = changer_lname;
-                break;
-            case 3://changes the Phone no.
-                System.out.println("CHANGE THE PHONE NUMBER TO :");//Allowing user to change Contact number
-                long changer_phone = fetch.nextLong();
-                this.phone_no = changer_phone;
-                break;
-
-            case 4://changes the Email
-                System.out.println("CHANGE THE EMAIL ID TO :");//Allowing user to change the email
-                String changer_email = fetch.next();
-                this.email = changer_email;
-                break;
+public class Address_book {
 
 
-            case 5://changes the ZIP code
-                System.out.println("CHANGE THE ZIP CODE TO :");//Allowing user to change the Zip code
-                int changer_zip = fetch.nextInt();
-                this.zip_code = changer_zip;
-                break;
+    public static void main(String[] args) {
+        Scanner fetch = new Scanner(System.in);
+        //Creating an arraylist instance of Ad_book_source
+        List<Ad_book_source> user = new ArrayList<>();
+        List<Ad_book_source> removable_list = new ArrayList<>();
+        Ad_book_source new_ad_book = new Ad_book_source();
+        user.add(new_ad_book);
+        //Printing out the users added
+        System.out.println(user.toString());
 
-            case 6://changes the City
-                System.out.println("CHANGE THE CITY TO :");//Allowing user to change the City
-                String changer_city = fetch.next();
-                this.city = changer_city;
-                break;
+        //Calling whose details the user wants to edit
+        System.out.println("Do you want to edit details of someone\ngive me a Yes or no");
+        String first_choice = fetch.nextLine();
+        if (first_choice == "yes" || first_choice == "Yes") {
+            boolean entry_found = false;
+            System.out.println("Whose details do you want to change ?");
+            String change_input = fetch.next();
+            for (Ad_book_source i : user) {
+                //When found user's desired choice call change details method
+                if (i.getName().equals(change_input)) {
 
-            default:
-                break;
+                    i.change_details();
+                }
+
+            }
+
+
+        }
+
+        System.out.println("Do you want to edit details of someone\ngive me a Yes or no");
+        String second_choice = fetch.nextLine();
+        if (second_choice == "yes" || second_choice == "Yes") {
+            System.out.println("WHOSE DETAILS DO YOU WANT TO DELETE");
+            String delete_input = fetch.next();
+            for (Ad_book_source i : user) {//iterating through the arraylist until finds user's input
+
+                if (i.getName().equals(delete_input)) {
+
+                    removable_list.add(i);// Using to_remove instance to store remove properties
+                    System.out.println("DELETED " + i.getName());
+                    break;
+                } else {
+                    System.out.println("WRONG INPUT");
+                    i.zero_set();
+                }
+
+
+            }
+            user.removeAll(removable_list);// removing stored user details
+
+
         }
 
     }
+
+}
+
+
+
