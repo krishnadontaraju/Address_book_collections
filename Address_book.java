@@ -10,9 +10,17 @@ public class Address_book {
         //Creating an arraylist instance of Ad_book_source
         List<Ad_book_source> user = new ArrayList<>();
         List<Ad_book_source> removable_list = new ArrayList<>();
-        Ad_book_source new_ad_book = new Ad_book_source();
-        user.add(new_ad_book);
+
+        //Asking user how many contacts does he want to  create
+        System.out.println("HOW MANY CONTACTS YOU WANT TO CREATE ?");
+        int no_of_contacts_input = fetch.nextInt();
+        //Creating the desired no.of Contacts
+        for (int i = 0; i < no_of_contacts_input; i++) {
+            Ad_book_source new_ad_book = new Ad_book_source();
+            user.add(new_ad_book);
+        }
         //Printing out the users added
+        System.out.println("THE FINAL LIST OF CONTACTS CREATED ARE :");
         System.out.println(user.toString());
 
         //Calling whose details the user wants to edit
@@ -61,6 +69,3 @@ public class Address_book {
     }
 
 }
-
-
-
