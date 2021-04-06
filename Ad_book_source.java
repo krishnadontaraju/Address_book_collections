@@ -4,7 +4,7 @@ public class Ad_book_source {
 
     String first_name;
     String last_name;
-    long mobile;
+    Long mobile;
     int zip_code;
     String email;
     String city;
@@ -13,27 +13,68 @@ public class Ad_book_source {
     private Scanner fetch = new Scanner(System.in);
 
     //Using constructor to take in values
-    public Ad_book_source() {
-        System.out.println("GIVE ME THE FIRST NAME :");
-        this.first_name = fetch.nextLine();
+    Ad_book_source() {
+    }
+
+    Ad_book_source(String first_name, String last_name, long mobile, String email, String city, String state, int zip_code) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.mobile = mobile;
+        this.email = email;
+        this.city = city;
+        this.state = state;
+        this.zip_code = zip_code;
+    }
+
+    public void setLast_name() {
         System.out.println("GIVE ME THE LAST NAME :");
-        this.last_name = fetch.nextLine();
+        this.last_name = fetch.next();
+    }
+
+    public void setMobile() {
         System.out.println("GIVE ME THE PHONE NO. :");
         this.mobile = fetch.nextLong();
-        System.out.println("GIVE ME THE EMAIL: ");
-        this.email = fetch.next();
+    }
+
+    public void setZip_code() {
         System.out.println("GIVE ME THE ZIP CODE");
         this.zip_code = fetch.nextInt();
+    }
+
+    public void setEmail() {
+        System.out.println("GIVE ME THE EMAIL: ");
+        this.email = fetch.next();
+    }
+
+    public void setCity() {
         System.out.println("GIVE ME THE CITY :");
         this.city = fetch.next();
+    }
+
+    public void setState() {
         System.out.println("GIVE ME THE STATE");
-        this.state = fetch.nextLine();
+        this.state = fetch.next();
+    }
+
+    public void setFirst_name() {
+        System.out.println("GIVE ME THE FIRST NAME :");
+        this.first_name = fetch.nextLine();
+    }
+
+    public void setDetails() {
+        setFirst_name();
+        setLast_name();
+        setMobile();
+        setEmail();
+        setCity();
+        setState();
+        setZip_code();
     }
 
     //Overriding toString method to return values as per desire
     public String toString() {
 
-        return ("FIRST NAME : " + first_name + "\nLAST NAME : " + last_name + "\nPHONE : " + mobile + "\nEMAIL : " + email + "\nZIP CODE : " + zip_code + "\nCITY : " + city + "\nSTATE : " + state);
+        return (getName() + "," + getLast_name() + "," + getMobile() + "," + getEmail() + "," + getCity() + "," + getState() + "," + getZip_code());
     }
 
     public String getName() {
@@ -60,7 +101,7 @@ public class Ad_book_source {
                 break;
             case 3://changes the Phone no.
                 System.out.println("CHANGE THE PHONE NUMBER TO :");//Allowing user to change Contact number
-                long changer_phone = fetch.nextLong();
+                Long changer_phone = fetch.nextLong();
                 this.mobile = changer_phone;
                 break;
 
@@ -92,6 +133,45 @@ public class Ad_book_source {
                 break;
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ad_book_source that = (Ad_book_source) o;
+        return first_name.equals(that.first_name);
+    }
+
+
+    public String getLast_name() {
+
+        return this.last_name;
+    }
+
+    public String getEmail() {
+
+        return this.email;
+    }
+
+    public String getCity() {
+
+        return this.city;
+    }
+
+    public long getMobile() {
+
+        return this.mobile;
+    }
+
+    public int getZip_code() {
+
+        return this.zip_code;
+    }
+
+    public String getState() {
+
+        return this.state;
     }
 
     public void zero_set() {
