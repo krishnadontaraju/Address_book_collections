@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
+    static List<Contact> contactBook = new ArrayList<>();
     public Scanner fetch = new Scanner(System.in);
-    List<Person> contactBook = new ArrayList<>();
 
     public void contactOperations() {
 
@@ -18,7 +18,7 @@ public class AddressBook {
             int choice = fetch.nextInt();
             switch (choice) {
                 case 1://Checking for duplicates if not, then add contact
-                    if (!duplicateCheck(getFirstName(),getLastName())) {
+                    if (!duplicateCheck(getFirstName(), getLastName())) {
                         contactBook.add(addContact());
                     }
                     System.out.println(contactBook.toString());
@@ -27,7 +27,7 @@ public class AddressBook {
                     System.out.println("Type first name for checking");
                     String testFirstName = fetch.next();
 
-                    Person firstTestContact = searchContact(testFirstName,getLastName());
+                    Contact firstTestContact = searchContact(testFirstName, getLastName());
 
                     if (firstTestContact != null) {
                         changeContact(firstTestContact);
@@ -39,7 +39,7 @@ public class AddressBook {
                     System.out.println("Type the first name for Checking");
                     String newTestFirstName = fetch.next();
 
-                    Person secondTestContact = searchContact(newTestFirstName,getLastName());
+                    Contact secondTestContact = searchContact(newTestFirstName, getLastName());
 
                     if (secondTestContact != null) {
                         contactBook.remove(secondTestContact);
@@ -54,11 +54,11 @@ public class AddressBook {
 
     }
 
-    public boolean duplicateCheck(String firstName , String lastName) {
+    public boolean duplicateCheck(String firstName, String lastName) {
         //Looking for match in address book to avoid duplicate
         return contactBook.stream()
                 .anyMatch(rotator -> rotator.getFirstName().equals(firstName)
-                                            && rotator.getLastName().equals(lastName));
+                        && rotator.getLastName().equals(lastName));
 
     }
 
@@ -70,19 +70,31 @@ public class AddressBook {
 
     }
 
+    //Returns the contact if found true
+    public Contact findByCityReturnContact(String cityOrState) {
+        for (Contact rotator : contactBook) {
+            if (contactBook.stream()
+                    .anyMatch(value -> value.getCity().equals(cityOrState)
+                            || rotator.getState().equals(cityOrState))) {
+                return rotator;
+            }
+        }
+        return null;
+    }
 
-    public Person searchContact(String firstName, String lastName) {
+
+    public Contact searchContact(String firstName, String lastName) {
         //Filtering through the Book to find the contact based on input
-        Person person = contactBook.stream().filter(
-                                                personElement -> personElement.getFirstName().equals(firstName)
-                                                && personElement.getLastName().equals(lastName))
-                                                .findFirst().orElse(null);
+        Contact contact = contactBook.stream().filter(
+                contactElement -> contactElement.getFirstName().equals(firstName)
+                        && contactElement.getLastName().equals(lastName))
+                .findFirst().orElse(null);
 
-        if (person == null) {
+        if (contact == null) {
             System.out.println("No person present matching with your given name");
             return null;
         } else {
-            return person;
+            return contact;
         }
 
     }
@@ -92,50 +104,52 @@ public class AddressBook {
         return fetch.next();
 
     }
-    public String getLastName(){
+
+    public String getLastName() {
         System.out.println("Type the last name for checking for even more depth Checking");
         return fetch.next();
     }
 
-    public Person changeContact(Person testContact) {
+
+    public Contact changeContact(Contact testContact) {
 
         System.out.println(testContact);
 
         System.out.println("Which detail do you want to change ?");
         System.out.println("1.First Name \n2.Last Name \n3.Mobile\n4.Email \n5.City\n6.State\7.Zip Code");
 
-        switch (fetch.nextInt()){
+        switch (fetch.nextInt()) {
             case 1:
                 System.out.println("To what you want to change the First Name");
                 testContact.setFirstName(fetch.next());
                 break;
 
-            case 2 :
+            case 2:
                 System.out.println("To what you want to change the Last Name");
                 testContact.setLastName(fetch.next());
                 break;
 
-            case 3 :
+            case 3:
                 System.out.println("To what you want to change the Mobile");
                 testContact.setMobile(fetch.nextLong());
                 break;
 
-            case 4 :
+            case 4:
                 System.out.println("To what you want to change the Email");
                 testContact.setEmail(fetch.next());
                 break;
 
-            case 5 :
+            case 5:
                 System.out.println("To what you want to change the City");
                 testContact.setCity(fetch.next());
                 break;
 
-            case 6 :
+            case 6:
                 System.out.println("To what you want to change the State");
                 testContact.setState(fetch.next());
                 break;
 
-            case 7 :
+            case 7:
                 System.out.println("To what you want to change the Zip Code");
                 testContact.setZipCode(fetch.nextInt());
                 break;
@@ -148,10 +162,10 @@ public class AddressBook {
         return testContact;
     }
 
-    public Person addContact() {
-        Person person = new Person();
-        person.setDetails();
-        return person;
+    public Contact addContact() {
+        Contact contact = new Contact();
+        contact.setDetails();
+        return contact;
     }
 
     @Override

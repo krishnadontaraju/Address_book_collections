@@ -1,14 +1,12 @@
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class AdBookMapOperations {
 
     private static Scanner fetch = new Scanner(System.in);
     private static Map<String, AddressBook> addressBookMap = new HashMap<>();
-
+    private static Map<String, Contact> cityToPersonMap = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -47,31 +45,36 @@ public class AdBookMapOperations {
                             break;
                         }//Checking if AddressBook is empty
                         if (addressBookMap.isEmpty()) {
-                                AddressBook bookSystem = addressBookMap.get(addressBookName);
-                                bookSystem.contactOperations();
+                            AddressBook bookSystem = addressBookMap.get(addressBookName);
+                            bookSystem.contactOperations();
+                            break;
+                        } else {
+                            if (addressBookMap.entrySet().stream().filter(value -> (value.getValue().duplicateCheck(tempFirstName, tempLastName)) == false).findAny() == null) {
+                                System.out.println("Duplicates found Please try Again");
                                 break;
                             } else {
-                                if (addressBookMap.entrySet().stream().filter(value -> (value.getValue().duplicateCheck(tempFirstName, tempLastName)) == false).findAny() == null) {
-                                    System.out.println("Duplicates found Please try Again");
-                                    break;
-                                } else {
 
-                                    AddressBook bookSystem = addressBookMap.get(addressBookName);
-                                    bookSystem.contactOperations();
-                                }
+                                AddressBook bookSystem = addressBookMap.get(addressBookName);
+                                bookSystem.contactOperations();
                             }
-
-                            System.out.println(addressBookMap.toString());
-                            break;
                         }
+
+                        System.out.println(addressBookMap.toString());
+                        break;
+                    }
                 case 3:
                     System.out.println("In which state or City you want to Search ?");
 
                     String city = fetch.next();
 
-                    //Using streams to filter to check the people with the desired city or state
-                    List<Map.Entry<String, AddressBook>> collect = addressBookMap.entrySet().stream().filter(value -> (value.getValue().findByCity(city))).collect(Collectors.toList());
-                    System.out.println(collect);
+                    //Using Normal for loop to filter to check the people with the desired city or state and map them to a new Dictionary
+                    for (Map.Entry<String, AddressBook> entry : addressBookMap.entrySet()) {
+                        if (addressBookMap.get(entry).findByCity(city)) {
+                            cityToPersonMap.put(city, addressBookMap.get(entry).findByCityReturnContact(city));
+                        }
+                    }
+
+                    System.out.println("The People Matching with your");
                     break;
 
 
