@@ -1,12 +1,14 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AdBookMapOperations {
 
     private static Scanner fetch = new Scanner(System.in);
     private static Map<String, AddressBook> addressBookMap = new HashMap<>();
-    private static Map<String, Contact> cityToPersonMap = new HashMap<>();
+    private Map<String, Contact> cityToPersonMap = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -15,7 +17,7 @@ public class AdBookMapOperations {
 
         while (!userSatisfied) {
 
-            System.out.println("1.create a new Book \n2.Add contacts to existing Book\n3.Find Contacts by City or State\n4.Exit from the Program");
+            System.out.println("1.create a new Book \n2.Add contacts to existing Book\n3.Find Contacts by City or State\n5.Exit from the Program");
             int choice = fetch.nextInt();
             System.out.println(choice);
             switch (choice) {
@@ -63,20 +65,19 @@ public class AdBookMapOperations {
                         break;
                     }
                 case 3:
+
+                    Map<String, Contact> cityToPersonMap = new HashMap<>();
+
                     System.out.println("In which state or City you want to Search ?");
 
-                    String city = fetch.next();
+                    String cityOrState = fetch.next();
 
-                    //Using Normal for loop to filter to check the people with the desired city or state and map them to a new Dictionary
-                    for (Map.Entry<String, AddressBook> entry : addressBookMap.entrySet()) {
-                        if (addressBookMap.get(entry).findByCity(city)) {
-                            cityToPersonMap.put(city, addressBookMap.get(entry).findByCityReturnContact(city));
-                        }
-                    }
+                    /*  Using Streams to filter out the Contacts with the desired cityOrState or state  */
+                    addressBookMap.entrySet().stream().forEach(value -> { Contact temporaryContact = value.getValue().findByCityReturnContact(cityOrState);
+                                                                            cityToPersonMap.put(cityOrState,temporaryContact);});
 
-                    System.out.println("The People Matching with your");
+                    System.out.println("The People Matching with your "+cityOrState+"are\n"+cityToPersonMap+"\nThe count is "+cityToPersonMap.size());
                     break;
-
 
                 default:
                     userSatisfied = true;
