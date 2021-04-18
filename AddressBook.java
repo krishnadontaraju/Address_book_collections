@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
-    static List<Contact> contactBook = new ArrayList<>();
+    public List<Contact> contactBook = new ArrayList<>();
     public Scanner fetch = new Scanner(System.in);
 
     public void contactOperations() {
