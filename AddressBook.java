@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,6 +53,10 @@ public class AddressBook {
             }
         }
 
+    }
+
+    public void sortByFirstName(){
+        contactBook.stream().sorted(Comparator.comparing(Contact::getFirstName));
     }
 
     public boolean duplicateCheck(String firstName, String lastName) {
