@@ -15,7 +15,7 @@ public class AdBookMapOperations {
 
         while (!userSatisfied) {
 
-            System.out.println("1.create a new Book \n2.Add contacts to existing Book\n3.Find Contacts by City or State\n4.Sort the contacts by First Name\n5.Exit from the Program");
+            System.out.println("1.create a new Book \n2.Add contacts to existing Book\n3.Find Contacts by City or State\n4.Sort the contacts by First Name\n5.Sort the contacts by City\n6.Sort the contacts by State\n7.Sort the contacts by Zip\n8.Exit from the Program");
             int choice = fetch.nextInt();
             System.out.println(choice);
             switch (choice) {
@@ -84,6 +84,36 @@ public class AdBookMapOperations {
                     /*  Stream to sort Contacts by First names */
 
                     addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByFirstName());
+
+                    System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
+
+                    break;
+
+                    case 5:
+
+                    /*  Stream to sort Contacts by City */
+
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByCity());
+
+                    System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
+
+                    break;
+
+                case 6:
+
+                    /*  Stream to sort Contacts by State */
+
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByState());
+
+                    System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
+
+                    break;
+
+                case 7:
+
+                    /*  Stream to sort Contacts by Zip Codes */
+
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByZipCode());
 
                     System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
 
