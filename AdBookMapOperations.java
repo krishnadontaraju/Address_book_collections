@@ -1,8 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AdBookMapOperations {
 
@@ -17,7 +15,7 @@ public class AdBookMapOperations {
 
         while (!userSatisfied) {
 
-            System.out.println("1.create a new Book \n2.Add contacts to existing Book\n3.Find Contacts by City or State\n5.Exit from the Program");
+            System.out.println("1.create a new Book \n2.Add contacts to existing Book\n3.Find Contacts by City or State\n4.Sort the contacts by First Name\n5.Exit from the Program");
             int choice = fetch.nextInt();
             System.out.println(choice);
             switch (choice) {
@@ -73,10 +71,22 @@ public class AdBookMapOperations {
                     String cityOrState = fetch.next();
 
                     /*  Using Streams to filter out the Contacts with the desired cityOrState or state  */
-                    addressBookMap.entrySet().stream().forEach(value -> { Contact temporaryContact = value.getValue().findByCityReturnContact(cityOrState);
-                                                                            cityToPersonMap.put(cityOrState,temporaryContact);});
+                    addressBookMap.entrySet().stream().forEach(value -> {
+                        Contact temporaryContact = value.getValue().findByCityReturnContact(cityOrState);
+                        cityToPersonMap.put(cityOrState, temporaryContact);
+                    });
 
-                    System.out.println("The People Matching with your "+cityOrState+"are\n"+cityToPersonMap+"\nThe count is "+cityToPersonMap.size());
+                    System.out.println("The People Matching with your " + cityOrState + "are\n" + cityToPersonMap + "\nThe count is " + cityToPersonMap.size());
+                    break;
+
+                case 4:
+
+                    /*  Stream to sort Contacts by First names */
+
+                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByFirstName());
+
+                    System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
+
                     break;
 
                 default:
