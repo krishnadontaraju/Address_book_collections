@@ -59,6 +59,18 @@ public class AddressBook {
         contactBook.stream().sorted(Comparator.comparing(Contact::getFirstName));
     }
 
+    public void sortByCity(){
+        contactBook.stream().sorted(Comparator.comparing(Contact::getCity));
+    }
+
+    public void sortByState(){
+        contactBook.stream().sorted(Comparator.comparing(Contact::getState));
+    }
+
+    public void sortByZipCode(){
+        contactBook.stream().sorted(Comparator.comparing(Contact::getZipCode));
+    }
+
     public boolean duplicateCheck(String firstName, String lastName) {
         //Looking for match in address book to avoid duplicate
         return contactBook.stream()
