@@ -1,15 +1,22 @@
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class AdBookMapOperations {
 
+    static PrintWriter mapToFile;
+    static final String MAP_FILE = "mapLink.txt";
+    static String mapPath;
     private static Scanner fetch = new Scanner(System.in);
     private static Map<String, AddressBook> addressBookMap = new HashMap<>();
     private Map<String, Contact> cityToPersonMap = new HashMap<>();
 
     public static void main(String[] args) {
 
+        readDataFromFilePassToMap(MAP_FILE, addressBookMap);
         System.out.println("Proceed with the given below options");
         boolean userSatisfied = false;
 
@@ -36,9 +43,9 @@ public class AdBookMapOperations {
 
                         System.out.println("Type the last name for more checking");
                         String tempLastName = fetch.next();
-                        System.out.println(addressBookMap.entrySet().stream().filter(value -> (value.getValue().duplicateCheck(tempFirstName, tempLastName)) == false).findAny());
+                        System.out.println(addressBookMap.entrySet().stream().filter(value -> !(value.getValue().duplicateCheck(tempFirstName, tempLastName))).findAny());
                         //Checking for Duplicates inside multiple address Books
-                        if (addressBookMap.keySet().stream().filter(value -> (value.equals(addressBookName))).findAny() == null) {
+                        if (addressBookMap.keySet().stream().noneMatch(value -> (value.equals(addressBookName)))) {
 
                         } else {
                             System.out.println("Address Book not found with your inputs");
@@ -49,7 +56,7 @@ public class AdBookMapOperations {
                             bookSystem.contactOperations();
                             break;
                         } else {
-                            if (addressBookMap.entrySet().stream().filter(value -> (value.getValue().duplicateCheck(tempFirstName, tempLastName)) == false).findAny() == null) {
+                            if (addressBookMap.entrySet().stream().allMatch(value -> value.getValue().duplicateCheck(tempFirstName, tempLastName))) {
                                 System.out.println("Duplicates found Please try Again");
                                 break;
                             } else {
@@ -71,8 +78,8 @@ public class AdBookMapOperations {
                     String cityOrState = fetch.next();
 
                     /*  Using Streams to filter out the Contacts with the desired cityOrState or state  */
-                    addressBookMap.entrySet().stream().forEach(value -> {
-                        Contact temporaryContact = value.getValue().findByCityReturnContact(cityOrState);
+                    addressBookMap.forEach((key, value1) -> {
+                        Contact temporaryContact = value1.findByCityReturnContact(cityOrState);
                         cityToPersonMap.put(cityOrState, temporaryContact);
                     });
 
@@ -83,7 +90,7 @@ public class AdBookMapOperations {
 
                     /*  Stream to sort Contacts by First names */
 
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByFirstName());
+                    addressBookMap.forEach((key1, value2) -> value2.sortByFirstName());
 
                     System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
 
@@ -93,7 +100,7 @@ public class AdBookMapOperations {
 
                     /*  Stream to sort Contacts by City */
 
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByCity());
+                    addressBookMap.forEach((key1, value2) -> value2.sortByCity());
 
                     System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
 
@@ -103,7 +110,7 @@ public class AdBookMapOperations {
 
                     /*  Stream to sort Contacts by State */
 
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByState());
+                    addressBookMap.forEach((key, value1) -> value1.sortByState());
 
                     System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
 
@@ -113,7 +120,7 @@ public class AdBookMapOperations {
 
                     /*  Stream to sort Contacts by Zip Codes */
 
-                    addressBookMap.entrySet().stream().forEach(value -> value.getValue().sortByZipCode());
+                    addressBookMap.forEach((key, value1) -> value1.sortByZipCode());
 
                     System.out.println("Your Contact Book is sorted " + addressBookMap.toString());
 
@@ -126,5 +133,34 @@ public class AdBookMapOperations {
             }
 
         }
+    }
+
+    public static Map<String, AddressBook> readDataFromFilePassToMap(String filePath,Map testMap) {
+        Path pathOfMap = Path.of("C:\\Users\\manik\\Desktop\\new\\Program_tester\\JAVA_content\\FileFolder\\AddressBookFiles\\MapFile.csv");
+        if (!Files.exists(pathOfMap)) {
+            try {
+                Files.createFile(pathOfMap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+           byte[] fileContent = Files.readAllBytes(pathOfMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String line = "";
+        try {
+
+            BufferedReader file_read = new BufferedReader(new FileReader(filePath));
+            while ((line = file_read.readLine()) != null) {
+                String[] new_values = line.split(",");
+                testMap.put(new_values[0], new_values[1]);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return testMap;
     }
 }
