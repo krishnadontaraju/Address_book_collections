@@ -10,6 +10,13 @@ public class Contact {
     private String email;
     private long phoneNumber;
 
+    public Contact(String firstName) {
+    }
+
+    public Contact() {
+
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -95,13 +102,13 @@ public class Contact {
     @Override
     public String toString() {
         return
-                        "firstName='" + firstName + '\'' +
-                        ", lastName='" + lastName + '\'' +
-                        ", phoneNumber='" + phoneNumber + '\'' +
-                        ", email='" + email + '\'' +
-                        ", city='" + city + '\'' +
-                        ", state='" + state + '\'' +
-                        ", zip=" + zipCode;
+                         firstName + ","+
+                         lastName + ","+
+                         phoneNumber + ","+
+                         email +","+
+                         city + ","+
+                         state + ","+
+                         zipCode;
     }
 
     @Override
