@@ -1,22 +1,36 @@
-import java.io.*;
-import java.nio.file.Files;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class AdBookMapOperations {
 
-    static PrintWriter mapToFile;
+    static final String FILE_LOCATION = "C:\\Users\\manik\\Desktop\\new\\Program_tester\\JAVA_content\\FileFolder\\AddressBookFiles";
     static final String MAP_FILE = "mapLink.txt";
-    static String mapPath;
+    static PrintWriter mapToFile;
+    static String mapPath = "C:\\Users\\manik\\Desktop\\new\\Program_tester\\JAVA_content\\FileFolder\\AddressBookFiles" + "\\" + MAP_FILE;
     private static Scanner fetch = new Scanner(System.in);
     private static Map<String, AddressBook> addressBookMap = new HashMap<>();
     private Map<String, Contact> cityToPersonMap = new HashMap<>();
 
     public static void main(String[] args) {
 
-        readDataFromFilePassToMap(MAP_FILE, addressBookMap);
+        try {
+            readDataFromFilePassToMap(MAP_FILE, addressBookMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CsvValidationException e) {
+            e.printStackTrace();
+        }
         System.out.println("Proceed with the given below options");
         boolean userSatisfied = false;
 
@@ -96,7 +110,7 @@ public class AdBookMapOperations {
 
                     break;
 
-                    case 5:
+                case 5:
 
                     /*  Stream to sort Contacts by City */
 
@@ -128,6 +142,7 @@ public class AdBookMapOperations {
 
                 default:
                     userSatisfied = true;
+                    writeData(FILE_LOCATION+mapToFile);
                     break;
 
             }
@@ -135,32 +150,36 @@ public class AdBookMapOperations {
         }
     }
 
-    public static Map<String, AddressBook> readDataFromFilePassToMap(String filePath,Map testMap) {
-        Path pathOfMap = Path.of("C:\\Users\\manik\\Desktop\\new\\Program_tester\\JAVA_content\\FileFolder\\AddressBookFiles\\MapFile.csv");
-        if (!Files.exists(pathOfMap)) {
-            try {
-                Files.createFile(pathOfMap);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static Map readDataFromFilePassToMap(String filePath, Map testMap) throws IOException, CsvValidationException {
+
+        try (var fileReader = new FileReader(filePath);
+             var csvFileReader = new CSVReader(fileReader)) {
+
+            String[] nextLine;
+
+            while ((nextLine = csvFileReader.readNext()) != null) {
+
+                for (var e : nextLine) {
+
+                    testMap.put(nextLine[0], nextLine[1]);
+
+                }
             }
         }
-        try {
-           byte[] fileContent = Files.readAllBytes(pathOfMap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String line = "";
-        try {
 
-            BufferedReader file_read = new BufferedReader(new FileReader(filePath));
-            while ((line = file_read.readLine()) != null) {
-                String[] new_values = line.split(",");
-                testMap.put(new_values[0], new_values[1]);
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return testMap;
+
     }
+
+    public static void writeData(String filePath) {
+
+        try {
+            CSVWriter mapWriter = new CSVWriter(new FileWriter(String.valueOf(Path.of(filePath))));
+            mapWriter.writeAll((List<String[]>) addressBookMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
