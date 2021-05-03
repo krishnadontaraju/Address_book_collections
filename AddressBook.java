@@ -1,10 +1,10 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import com.google.gson.Gson;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class AddressBook {
     public String contactBookLocation;
@@ -32,6 +32,12 @@ public class AddressBook {
     public void contactOperations() {
 
         System.out.println("Welcome Contact Operations \nProceed with below");
+
+        try {
+            readDataFromJson();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         boolean userSatisfaction = false;
 
@@ -64,7 +70,15 @@ public class AddressBook {
                     }
                     System.out.println(contactBook.toString());
                 }
-                default -> userSatisfaction = true;
+                default -> {
+                    try {
+                        writeDataToJSon();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+
+                        userSatisfaction = true;
+                    }
+                }
             }
         }
 
@@ -219,6 +233,34 @@ public class AddressBook {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void writeDataToJSon() throws IOException {
+        {
+            Path filePath = Paths.get("AddressBook.json");
+            Gson gson = new Gson();
+            String json = gson.toJson(contactBook);
+            FileWriter writer = new FileWriter(String.valueOf(filePath));
+            writer.write(json);
+            writer.close();
+        }
+    }
+
+    public void readDataFromJson() throws IOException {
+        ArrayList<Contact> contactList = null;
+        Path filePath = Paths.get("AddressBook.json");
+        try (Reader reader = Files.newBufferedReader(filePath);) {
+            Gson gson = new Gson();
+            contactList = new ArrayList<Contact>(Arrays.asList(gson.fromJson(reader, Contact[].class)));
+            for (Contact contact : contactList) {
+                System.out.println("Firstname : " + contact.getFirstName());
+                System.out.println("Lastname : " + contact.getLastName());
+                System.out.println("City : " + contact.getCity());
+                System.out.println("State : " + contact.getState());
+                System.out.println("Phone number : " + contact.getPhoneNumber());
+                System.out.println("Email : " + contact.getEmail());
+            }
         }
     }
 }
